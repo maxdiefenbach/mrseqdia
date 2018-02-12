@@ -1,0 +1,150 @@
+\NeedsTeXFormat{LaTeX2e}[1994/06/01]
+\ProvidesPackage{mrpulseqdia}[2017/02/14 MR pulse sequence diagrams]
+
+\RequirePackage{tikz}
+\usetikzlibrary{math,calc,arrows.meta}
+
+
+\newcommand{\init}{%
+  \coordinate (O) at (0,0);
+  \newdimen\Ox
+  \newdimen\Oy
+  \pgfgetlastxy{\Ox}{\Oy};
+}
+
+\newcommand{\updateO}{%
+  \pgfgetlastxy{\Ox}{\Oy};
+  \coordinate (O) at (\Ox,\Oy);
+}
+
+\newcommand{\startline}[3][(O)]{%
+  \draw[shift={#1},xscale=#2] (0,0) node[anchor=east] {#3} -- (1,0);
+  \updateO;
+}
+
+\newcommand{\xline}[2][(O)]{%
+  \draw[shift={#1},xscale=#2] (0,0) -- (1,0);
+  \updateO;
+}
+
+\newcommand{\xspan}[3][(O)]{%
+  \draw[{Triangle[width=5pt,length=7pt]}-{Triangle[width=5pt,length=7pt]},
+  shift={#1},xscale=#2]
+  (0,0) -- (0.5,0) node[fill=white,draw] {#3} -- (1,0);
+  \updateO;
+}
+
+\newcommand{\yline}[2][(O)]{%
+  \draw[dashed,shift={#1},yscale=#2] (0,-0.5) -- (0,0.5);
+}
+
+\newcommand{\yspan}[2][(O)]{%
+  \draw[dashed] #1 -- #2;
+}
+
+\newcommand{\yarrow}[3][(O)]{%
+  \draw[-{Triangle[width=5pt,length=7pt]},
+  gray!80!black,
+  line width=2pt,
+  shift={#1},xscale=#2,yscale=#3] (0,-0.5) -- (0,0.5);
+}
+
+\newcommand{\pulse}[4][(O)]{%
+  \draw[shift={#1},xscale=#2,yscale=#3] (0,0)
+  node[anchor=south east,shift={(0.2,0.5)}] {#4}
+  \foreach \i in {1,1.25,...,100}
+  {-- ({\i/100}, {sin(\i * (0.5*3.6))^3 * sin(\i * (6.5*3.6))}) };
+  \updateO;
+}
+
+\newcommand{\block}[3][(O)]{%
+  \draw[fill,shift={#1},xscale=#2,yscale=#3]
+  (-0.05,0) -- (-0.05,1) -- (0.05,1) -- (0.05,0);
+  \updateO;
+}
+
+\newcommand{\blib}[3][(O)]{%
+  \draw[shift={#1},xscale=#2,yscale=#3] (0,0) -- (0.5,1) -- (1,0);
+  \updateO;
+}
+
+\newcommand{\grad}[3][(O)]{%
+  \draw[shift={#1},xscale=#2,yscale=#3] (0,0) -- (0,1) -- (1,1) -- (1,0);
+  \updateO;
+}
+
+\newcommand{\fgrad}[3][(O)]{%
+  \draw[fill=white!70!black,shift={#1},xscale=#2,yscale=#3] (0,0) -- (0,1) -- (1,1) -- (1,0);
+  \updateO;
+}
+
+\newcommand{\grado}[3][(O)]{%
+  \draw[shift={#1},xscale=#2,yscale=#3] (0,0) -- (0,1) -- (1,1);
+  \updateO;
+}
+
+\newcommand{\ograd}[3][(O)]{%
+  \draw[shift={#1},xscale=#2,yscale=#3] (0,0) -- (1,0) -- (1,-1);
+  \updateO;
+}
+
+\newcommand{\fgrado}[3][(O)]{%
+  \path[shift={#1},xscale=#2,yscale=#3,fill=white!70!black]
+  (0,0) -- (0,1) -- (1,1) -- (1,0);
+  \draw[shift={#1},xscale=#2,yscale=#3] (0,0) -- (0,1) -- (1,1);
+  \updateO;
+}
+
+\newcommand{\ofgrad}[3][(O)]{%
+  \path[shift={#1},xscale=#2,yscale=#3,fill=white!70!black]
+  (0,0) -- (1,0) -- (1,-1) -- (0,-1);
+  \draw[fill=white!70!black,shift={#1},xscale=#2,yscale=#3] (0,0) -- (1,0) -- (1,-1);
+  \updateO;
+}
+
+\newcommand{\phgrad}[4][(O)]{%
+  \foreach \i in {0,...,#4} {%  % repetitions
+    \draw[help lines,shift={#1},xscale=#2,yscale={-#3 + \i * 2 * #3/#4}]
+    (0,0) -- (0,1) -- (1,1) -- (1,0);
+  }
+  \draw[shift={#1},xscale=#2,yscale=#3] % envelope
+  (0,0) -- (0,1) --
+  (0.5,1) node[inner sep=0,outer sep=0] (tmp) {}
+  -- (1,1) -- (1,0);
+  \updateO;
+  \draw[-{Triangle[width=5pt,length=7pt]}, % arrow
+  gray!80!black,
+  line width=2pt]
+  (tmp) -- ++(0,-2 * #3);
+}
+
+\newcommand{\trapez}[3][(O)]{%
+  \draw[shift={#1},xscale=#2,yscale=#3] (0,0) -- (0.25,1) -- (0.75,1) -- (1,0);
+  \updateO;
+}
+
+\newcommand{\phtrapez}[4][(O)]{%
+  \draw[shift={#1},xscale=#2,yscale=#3] (0,0) -- (0.25,1) -- (0.75,1) -- (1,0);
+  \foreach \i in {0,...,#4} {%
+    \draw[help lines,shift={#1},xscale=#2,yscale={-#3 + \i * 2 * #3/#4}]
+    (0,0) -- (0.25,1) -- (0.75,1) -- (1,0);
+  }
+  \updateO;
+}
+
+\newcommand{\acq}[4][(O)]{%
+  \draw[shift={#1},xscale=#2,yscale=#3]
+  (0,-0.5) rectangle (1,0.5) node[midway] {#4};
+  \path[shift={#1},xscale=#2,yscale=#3] (1,0);
+  \updateO;
+}
+
+\newcommand{\echo}[1][(O)]{%
+  \draw[fill] #1 circle (0.045);
+  \foreach \x in {0.09,0.16,0.23}
+  {\draw[rounded corners,line width=1pt] ($#1 + (\x,\x)$)
+    arc[start angle=45,end angle=135,radius={sqrt(2)*\x}];
+  };
+}
+
+\endinput
