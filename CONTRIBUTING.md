@@ -1,0 +1,4 @@
+- write documentation
+- add examples
+- implement new sequence elements 
+- rewrite commands to pass options to tikz elements
