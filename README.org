@@ -2,7 +2,7 @@
 #+DATE: <2018-02-17 Sat>
 #+AUTHOR: Maximilian Diefenbach
 #+EMAIL: maximilian.diefenbach@tum.de
-#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \n:nil ^:t arch:headline author:t broken-links:nil c:nil creator:nil
+#+OPTIONS: ':nil *:t -:t ::t <:t H:3 \n:nil ^:nil arch:headline author:t broken-links:nil c:nil creator:nil
 #+OPTIONS: d:(not "LOGBOOK") date:t e:t email:nil f:t inline:t num:nil p:nil pri:nil prop:nil stat:t tags:t tasks:t tex:nil
 #+OPTIONS: timestamp:t title:t toc:nil todo:t |:t
 #+LANGUAGE: en
@@ -13,29 +13,23 @@
 * Description
   Latex package to create pulse sequence diagrams in magnetic resonance imaging.
 
-* Usage
-  #+BEGIN_SRC latex :exports code
-    \documentclass{article}
-    \usepackage{mrseqdia}
-
-    \begin{document}
-
-    % FID acquisition
-    \begin{tikzpicture}
-      \init;
-      \startline{1}{RF};
-      \pulse{1}{1}{$\alpha$};
-      \xline{0.5};
-      \acq{3}{0.5}{Acquire};
-      \xline{1};
-    \end{tikzpicture}
-
-    \end{document}
-  #+END_SRC
+* Installation
   
+** Project by project
+   Just copy the file =mrseqdia.sty= next to the tex file you want to compile.
+
+** Add mrseqdia to your global latex installation
+   1. Find out your latex distributions folder for custom packages
+      #+BEGIN_SRC sh
+        kpsewhich -var-value=TEXMFHOME
+      #+END_SRC
+   2. under this folder, copy =mrseqdia.sty= to [...]/tex/latex/mrseqdia/mrseqdia.sty      
+
+* Usage
+  #+INCLUDE: "test_mrseqdia.tex" src org :lines "7-16"
   
 * Examples
-  [[file:test_mrseqdia.tex][test_mrseqdia.tex]]
+  [[file:./test_mrseqdia.tex][test_mrseqdia.tex]]
 
 * Contributing
   #+INCLUDE: "./CONTRIBUTING.md" 
@@ -44,4 +38,4 @@
   This repository is a translation of [[https://github.com/dangom/mr-sequence-diagrams][GitHub - dangom/mr-sequence-diagrams: Draw MR Sequence Diagrams for LaTeX / M...]] from metapost to TikZ/LaTeX. The initial metapost repository was originally created by Mark J White for his PhD Thesis. A snapshot is available in the Internet Archive [[http://web.archive.org/web/20160629144038/http://www.celos.net/comp/pulses/][here]]. Two of the macros --- the ones for the trapez gradient wave forms ---  were written by T. A. Wilkinson and can be found in his blog [[https://tinkertailorsoldiersponge.wordpress.com/category/tinker/latex/][here]].
 
 * License
-  #+INCLUDE: "./LICENSE"
+  #+INCLUDE: "./LICENSE" :lines "634-648"
