@@ -1,5 +1,6 @@
+% -*- compile-command: (concat "mkdir -p $(kpsewhich -var-value=TEXMFHOME)/tex/latex/mrseqdia; cp " (buffer-file-name) " $(kpsewhich -var-value=TEXMFHOME)/tex/latex/mrseqdia/") -*-
 \NeedsTeXFormat{LaTeX2e}[1994/06/01]
-\ProvidesPackage{mrpulseqdia}[2017/02/14 MR pulse sequence diagrams]
+\ProvidesPackage{mrseqdia}[2017/02/14 MR pulse sequence diagrams]
 
 \RequirePackage{tikz}
 \usetikzlibrary{math,calc,arrows.meta}
